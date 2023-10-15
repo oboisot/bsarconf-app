@@ -1,0 +1,176 @@
+\documentclass[tikz,border=0pt]{standalone}
+%\documentclass[multi=tikzpicture,varwidth=false,9pt]{standalone} % Permet d'éviter le clash d'import du package xcolor avec tikz
+% qui doit être importé avant tikz (pas possible sir tikz est déclaré dans le préambule de la classe standalone)
+
+% Pour les symboles et équations mathématiques
+\usepackage{amsmath,amssymb,amsfonts}
+% Dessins en LaTeX
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+
+% Colors
+%\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{refgreen}{HTML}{006400}
+\definecolor{gold}{HTML}{ffa500}
+
+% Fonctions persos
+\input{Ellipsoid3D.tex}
+
+%%%%%%%%%%%%%%%%%
+% Ellipsoid Drawing Functions %
+%%%%%%%%%%%%%%%%%
+% Draw full meridian at a given longitude and altitude
+\newcommand{\DrawMeridian}[5][black]{ % equatorial radius, polar radius, longitude,altitude.
+							                 % Optional = drawing options
+    % Function call :
+    % \DrawMeridian[<drawing options>]{<equatorial radius>}{<polar radius>}{<longitude>}{<altitude>}
+    \pgfmathsetmacro{\es}{1-#3*#3/(#2*#2)}; % eccentricity squared
+    \pgfmathsetmacro{\clon}{cos(#4)};\pgfmathsetmacro{\slon}{sin(#4)}; % cos(lon0), sin(lon0)
+    \draw[#1] ({(#2+#5)*\clon},{(#2+#5)*\slon},0)%
+        \foreach \lat in {1,2,...,359} {%
+            \pgfextra%
+                \pgfmathsetmacro{\clat}{cos(\lat)};\pgfmathsetmacro{\slat}{sin(\lat)};% cos(lat), sin(lat)
+                \pgfmathsetmacro{\nu}{#2/sqrt(1-\es*\slat*\slat)};% nu(lat)
+                \pgfmathsetmacro{\x}{(\nu+#5)*\clat*\clon};%
+                \pgfmathsetmacro{\y}{(\nu+#5)*\clat*\slon};%
+                \pgfmathsetmacro{\z}{((1-\es)*\nu+#5)*\slat};%
+           \endpgfextra%
+            -- (\x, \y, \z)%
+    } -- cycle;%
+}%
+% Draw partial meridian at a given longitude and altitude between latmin and latmax.
+\newcommand{\DrawMeridianBetween}[7][black]{ % equatorial radius, polar radius, longitude,altitude,latmin,latmax.
+							                                   % Optional = drawing options
+    % Function call :
+    % \DrawMeridianBetween[<drawing options>]{<equatorial radius>}{<polar radius>}{<longitude>}{<altitude>}{<latmin>}{<latmax>}
+    \pgfmathsetmacro{\es}{1-#3*#3/(#2*#2)}; % eccentricity squared
+    \pgfmathsetmacro{\clon}{cos(#4)};\pgfmathsetmacro{\slon}{sin(#4)}; % cos(lon0), sin(lon0)
+    % Initial point
+    \pgfmathsetmacro{\clatmin}{cos(#6)};\pgfmathsetmacro{\slatmin}{sin(#6)};% cos(lat), sin(lat)
+    \pgfmathsetmacro{\nu}{#2/sqrt(1-\es*\slatmin*\slatmin)};% nu(lat)
+    \pgfmathsetmacro{\x}{(\nu+#5)*\clatmin*\clon};%
+    \pgfmathsetmacro{\y}{(\nu+#5)*\clatmin*\slon};%
+    \pgfmathsetmacro{\z}{((1-\es)*\nu+#5)*\slatmin};%
+    % bounds
+    \pgfmathsetmacro{\latmin}{#6+1};\pgfmathsetmacro{\latmax}{#7};
+    \pgfmathsetmacro{\dlat}{#6+2};
+    \draw[#1] (\x,\y,\z)%
+        \foreach \lat in {\latmin,\dlat,...,\latmax} {%
+            \pgfextra%
+                \pgfmathsetmacro{\clat}{cos(\lat)};\pgfmathsetmacro{\slat}{sin(\lat)};% cos(lat), sin(lat)
+                \pgfmathsetmacro{\nu}{#2/sqrt(1-\es*\slat*\slat)};% nu(lat)
+                \pgfmathsetmacro{\x}{(\nu+#5)*\clat*\clon};%
+                \pgfmathsetmacro{\y}{(\nu+#5)*\clat*\slon};%
+                \pgfmathsetmacro{\z}{((1-\es)*\nu+#5)*\slat};%
+           \endpgfextra%
+            -- (\x, \y, \z)%
+    };%
+}%
+% Draw full parallel at a given latitude and altitude
+\newcommand{\DrawParallel}[5][black]{ % equatorial radius, polar radius, latitude,altitude.
+							                 % Optional = drawing options
+    % Function call :
+    % \DrawParallel[<drawing options>]{<equatorial radius>}{<polar radius>}{<latitude>}{<altitude>}
+    \pgfmathsetmacro{\es}{1-#3*#3/(#2*#2)}; % eccentricity squared
+    \pgfmathsetmacro{\clat}{cos(#4)};\pgfmathsetmacro{\slat}{sin(#4)}; % cos(phi0), sin(phi0)
+    \pgfmathsetmacro{\nu}{#2/sqrt(1-\es*\slat*\slat)}; % nu(phi0)
+    \draw[#1] ({(\nu+#5)*\clat},0,{((1-\es)*\nu+#5)*\slat})%
+        \foreach \lon in {1,2,...,359} {%
+            \pgfextra%
+                \pgfmathsetmacro{\x}{(\nu+#5)*\clat*cos(\lon)};%
+                \pgfmathsetmacro{\y}{(\nu+#5)*\clat*sin(\lon)};%
+                \pgfmathsetmacro{\z}{((1-\es)*\nu+#5)*\slat};%
+           \endpgfextra%
+            -- (\x, \y, \z)%
+    } -- cycle;%
+}%
+% Draw partial parallel at a given latitude and altitude between lonmin and lonmax
+\newcommand{\DrawParallelBetween}[7][black]{ % equatorial radius, polar radius, latitude,altitude,lonmin,lonmax.
+							                                % Optional = drawing options
+    % Function call :
+    % \DrawParallelBetween[<drawing options>]{<equatorial radius>}{<polar radius>}{<latitude>}{<altitude>}{<lonmin>}{<lonmax>}
+    \pgfmathsetmacro{\es}{1-#3*#3/(#2*#2)}; % eccentricity squared
+    \pgfmathsetmacro{\clat}{cos(#4)};\pgfmathsetmacro{\slat}{sin(#4)}; % cos(phi0), sin(phi0)
+    \pgfmathsetmacro{\nu}{#2/sqrt(1-\es*\slat*\slat)}; % nu(phi0)
+     % Initial point
+    \pgfmathsetmacro{\clonmin}{cos(#6)};\pgfmathsetmacro{\slonmin}{sin(#6)};% cos(lat), sin(lat)
+    \pgfmathsetmacro{\x}{(\nu+#5)*\clat*\clonmin};%
+    \pgfmathsetmacro{\y}{(\nu+#5)*\clat*\slonmin};%
+    \pgfmathsetmacro{\z}{((1-\es)*\nu+#5)*\slat};%
+    % bounds
+    \pgfmathsetmacro{\lonmin}{#6+1};\pgfmathsetmacro{\lonmax}{#7};
+    \pgfmathsetmacro{\dlon}{#6+2};
+    \draw[#1] (\x,\y,\z)%
+        \foreach \lon in {\lonmin,\dlon,...,\lonmax} {%
+            \pgfextra%
+                \pgfmathsetmacro{\x}{(\nu+#5)*\clat*cos(\lon)};%
+                \pgfmathsetmacro{\y}{(\nu+#5)*\clat*sin(\lon)};%
+                \pgfmathsetmacro{\z}{((1-\es)*\nu+#5)*\slat};%
+           \endpgfextra%
+            -- (\x, \y, \z)%
+    };%
+}%
+
+\begin{document}
+\tdplotsetmaincoords{70}{130}
+%
+\begin{tikzpicture}[tdplot_main_coords,scale=3]
+    % Tracé de l'ellipsoïde
+        % Ellipsoid definition
+    \pgfmathsetmacro{\a}{2}; % a
+    \pgfmathsetmacro{\b}{1.993294379}; % b = 0,996647189 * a for WGS84 ellipsoid
+        % Point P definition
+    \pgfmathsetmacro{\lat}{30}; % latitude [°]
+    \pgfmathsetmacro{\lon}{60}; % longitude [°]
+    \pgfmathsetmacro{\alt}{.5}; % altitude [m]
+    % Tracé des axes de références
+    \draw[lightgray,thin,-stealth,thick] (0,0,0) -- ({\a+0.1},0,0) node[below left]{$\hat{x}$}; % x-axis
+    \draw[lightgray,thin,-stealth,thick] (0,0,0) -- (0,{\a+0.1},0) node[anchor=north west]{$\hat{y}$}; % y-axis
+    \draw[lightgray,thin,-stealth,thick] (0,0,-0.9) -- (0,0,{\b+0.1}) node[anchor=south]{$\hat{z}$}; % z-axis
+    \node[lightgray,opacity=1,above left] at (0,0,0) {$O$};
+    % Tracé de l'ellipsoide + équateur + Greenwich meridian
+    \pgfmathsetmacro{\dangle}{5}; % Spacing angle between ellipsoid wireframes
+    \DrawEllipsoidSurface[draw=black, opacity=0.15,
+    				            fill=black, fill opacity=0.1]{\a}{\b}{\b}{\dangle}{\dangle};
+    \DrawParallelBetween[black,thick,fill=white,fill opacity=0.1]{\a}{\b}{0}{0}{-50}{130};
+    \DrawParallelBetween[black,thick,densely dashed,fill=white,fill opacity=0.1]{\a}{\b}{0}{0}{130}{310};
+   % Meridian and Parallel of point P at altitude 0
+    \DrawMeridianBetween[black,thin,fill=white,fill opacity=0.1]{\a}{\b}{\lon}{0}{-70}{110};
+    \DrawMeridianBetween[black,thin,densely dashed,fill=white,fill opacity=0.1]{\a}{\b}{\lon}{0}{110}{290};
+    % Meridian and Parallel of point P at altitude h
+    \DrawMeridianBetween[gold,thin]{\a}{\b}{\lon}{\alt}{-108}{150};
+    \DrawMeridianBetween[gold,thin,densely dashed]{\a}{\b}{\lon}{\alt}{150}{252};
+    \DrawParallelBetween[gold,thin]{\a}{\b}{\lat}{\alt}{-121}{201};
+    \DrawParallelBetween[gold,thin,densely dashed]{\a}{\b}{\lat}{\alt}{200}{239};
+
+    % Axes plan local ENU (h = 0.5)    				            % (h = 0)
+    \coordinate (P) at (1.08325735,1.87625677,1.24413786);% lon=60°,lat=30°,alt=0.5
+    \coordinate (Psurf) at (0.866751 ,1.50125677, 0.99413786);
+    \coordinate (nu) at (0, 0, -0.006699988542861978); % nu(phi)
+    \coordinate (loneq) at (1,1.73205081,0); %
+%    % Plan ENU
+    \draw[white,line width=.3pt,opacity=1,dashed] (P) -- (Psurf) node[midway,below] {\footnotesize$H$} -- (nu);
+    \draw[black,fill=black,opacity=1] (Psurf) circle (0.015cm);
+    \tdplotsetrotatedcoords{60}{60}{90};
+    \tdplotsetrotatedcoordsorigin{(P)};
+	% local ENU plane
+    \draw[thick,refgreen,fill=refgreen,fill opacity=0.6,tdplot_rotated_coords]
+    		(-0.4,-0.4,0) -- (0.4,-0.4,0) -- (0.4,0.4,0) -- (-0.4,0.4,0) -- cycle;
+	% local ENU referential
+    \draw[red,-stealth,thick,opacity=1,tdplot_rotated_coords] (0,0,0) -- (0.3,0,0) node[below]{$\hat{e}$}; % e
+    \draw[green,-stealth,thick,opacity=1,tdplot_rotated_coords] (0,0,0) -- (0,0.3,0) node[left]{$\hat{n}$}; % n
+    \draw[blue,-stealth,thick,opacity=1,tdplot_rotated_coords] (0,0,0) -- (0,0,0.3) node[above right]{$\hat{u}$}; % u
+    	% Origin of local ENU
+    \draw[gold,fill=gold] (P) circle (0.015cm) node[above left] {$P$};
+    % Tracés coordonnées lat, lon, h
+         % lambda
+    \draw[white,densely dashed] (0,0,0) -- (loneq);
+    \tdplotdefinepoints(0,0,0)(2,0,0)(1,1.73205081,0);
+    \tdplotdrawpolytopearc[white,->]{0.6}{below}{\color{white}\large$\lambda$};
+        % phi
+    \tdplotdefinepoints(0,0,0)(1,1.73205081, 0)(0.866751 ,1.50125677, 0.99413786);
+    \tdplotdrawpolytopearc[white,->]{0.75}{right}{\color{white}\large$\phi$};
+\end{tikzpicture}
+%
+\end{document}

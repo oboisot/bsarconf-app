@@ -1,0 +1,510 @@
+html, body {
+	margin: 0;
+    height: 100%;
+	width: 100%;
+	background-color: #000000;
+	color: #ffffff;
+	font-family: "Lucida Console", "Courier New", "Monospace", "Arial";
+	font-size: 16px;
+	line-height: 16px;
+	overscroll-behavior: none;
+	overflow: hidden;
+}
+
+input[type=number], input[type=text] {
+	width: 80px;
+	min-height: 34px;
+	min-width: 80px;
+}
+
+.coordinatesInput {
+	appearance: textfield;
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+}
+
+input[type=number]:invalid+span:after,
+input[type=text]:invalid+span:after {
+	content: '✖';
+	color: #ff0000;
+	font-size: 20px;
+}
+  
+input[type=number]:valid+span:after,
+input[type=text]:valid+span:after {
+	content: '✓';
+	color: #00ff00;
+	font-size: 20px;
+}
+
+.canvas {
+    width: 100%;
+    height: 100%;
+	z-index: -1;
+}
+
+.leftDiv, .rightDiv {
+	display: block;
+	position: fixed;
+	top: 0px;
+	width: 360px;
+	z-index: 10;
+	transition: 0.5s;
+	transition-timing-function: ease-in-out;
+}
+
+.leftDiv {
+	left: 0px;
+	transform: translateX(-300px);
+}
+
+.rightDiv {
+	right: 0px;
+	transform: translateX(300px);
+}
+
+#TxInputDiv, #RxInputDiv {
+	display: block;
+	float: left;
+}
+
+.TxInputTable, .RxInputTable {
+	width: 300px;
+	display: none;
+	color: #000000;
+}
+
+.TxInputTable {
+	color: #000000;
+	background-color: rgba(255,255,255,0.5);
+}
+
+.RxInputTable {
+	color: #ffffff;
+	background-color: rgba(0,0,0,0.5);
+}
+
+.tdInputText {
+	text-align: right;
+}
+
+.thInputText {
+	text-decoration: underline;
+}
+
+.txInfosDiv, .rxInfosDiv, .BSARInfosDiv {
+	display: block;
+	position: fixed;
+	font-size: 14px;
+	top: 0px;
+	width: 350px;
+	height: 360px;
+	z-index: 0;
+	transition: 0.5s;
+	transition-timing-function: ease-in-out;
+	transform: translateY(-360px);
+	/* border: 1px solid white; */ /* for debug */
+}
+
+.txInfosDiv {
+	left: calc(100% / 2 - 525px);
+}
+
+.rxInfosDiv {
+	left: calc(100% / 2 + 175px);
+}
+
+.BSARInfosDiv {
+	left: calc(100% / 2 - 175px);
+}
+
+.InfosTable {
+	margin: 0 auto; /* center the table in the div */
+}
+
+/* PLOTS */
+.plotIsoRangeDop, .plotGAFAmp {
+	display: block;
+	position: fixed;
+	height: 400px;
+	bottom: 0px;
+	margin: 0 auto;
+	transition: 0.5s;
+	transition-timing-function: ease-in-out;
+}
+
+.plotIsoRangeDop {
+	width: 400px;
+	left: 0px;
+	transform: translateY(400px);
+}
+
+.plotGAFAmp {
+	width: 451px;
+	right: 0px;
+	transform: translateY(400px);
+}
+
+/*********** BUTTONS ***********/
+.header {
+	display: block;
+	position: fixed;
+	top: 0px;
+	left: calc(100% / 2 - 300px);
+	height: 60px;
+	width: 600px;
+	z-index: 10;
+	background:rgba(0,0,0,0.5);
+	text-align: center;
+}
+
+.BSARMenuButton {
+	display: block;
+	float: left;
+	cursor: pointer;
+	background-color: transparent;
+	border: none;
+	color: white;
+	width: 60px;
+	height: 100%;
+	font-size: 18px;
+	font-weight: bolder;
+	text-align: center;
+}
+
+#BSARbutton {
+	width: 300px;
+}
+
+.BSARbuttonImg {
+	filter: invert(100%);
+	transform: rotate(90deg);
+	transition: 0.5s;
+	transition-timing-function: ease-in-out;
+}
+
+.BSARMenuButton:hover {
+	border: 2px solid white;
+}
+
+.MenuButton, .TxInputButton, .RxInputButton {
+	display: block;
+	cursor: pointer;	
+	border: none;
+	width: 300px;
+	height: 60px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	font-weight: bolder;
+}
+
+.MenuButton, .RxInputButton {
+	color: #ffffff;
+	background: rgba(0,0,0,0.6);
+}
+
+.TxInputButton {
+	color: #000000;
+	background: rgba(255,255,255,0.6);
+}
+
+.MenuButton:hover, .RxInputButton:hover {
+	border: 2px solid #ffffff;
+}
+
+.TxInputButton:hover {
+	border: 2px solid #000000;
+}
+
+#TxButton {
+	display: block;
+	float: left;
+	cursor: pointer; 
+	background: rgba(255,255,255,0.6);
+	border: none;
+	color: #000000;
+	width: 60px;
+	height:60px;
+	padding: 5px 5px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+#RxButton {
+	display: block;
+	float: left;
+	cursor: pointer; 
+	background: rgba(0,0,0,0.6);
+	border: none;
+	color: white;
+	width: 60px;
+	height:60px;
+	padding: 5px 5px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+#TxButtonImg, #RxButtonImg {
+	transition: 0.5s;
+	transition-timing-function: ease-in-out;
+}
+
+#RxButtonImg {
+	filter: invert(100%);
+	transform: rotate(180deg);	
+}
+
+.ImgButton {
+	display: block;
+	width: 40px;
+	height: 40px;
+	margin: 0 auto;
+	background-size: cover;
+	background-color: transparent;
+}
+
+.TxtoRxIcon {
+	background-image: url("../img/icons/txtorxlogo.svg");
+}
+
+#TxToRxButton:hover div {
+	background-image: url("../img/icons/txtorxhoveredlogo.svg");
+}
+
+.LoadIcon {
+	background-image: url("../img/icons/import.svg");
+	filter: invert(100%);
+}
+
+.SaveIcon {
+	background-image: url("../img/icons/save.svg");
+	filter: invert(100%);
+}
+
+.ScreenshotIcon {
+	background-image: url("../img/icons/screenshot.svg");
+	filter: invert(100%);
+}
+
+.DocumentationIcon {
+	background-image: url("../img/icons/infos.svg");
+	filter: invert(100%);
+}
+
+.BSARMenuButton:hover div {
+	filter: invert(0%);
+}
+
+.DropZone {
+	display: none;
+	position: fixed;
+	z-index: 100;
+	justify-content: center;
+	align-items: center;
+	width: calc(100% - 124px);
+	height: calc(100% - 124px);
+	top: 60px;
+	left: 60px;
+	margin: 0 auto;
+	border: 2px solid rgb(255,255,255);
+	background: rgba(0,0,0,0.5);
+}
+
+/* ***** COORDINATES TABLE ***** */
+#Coordinates {
+	display: block;
+	position: fixed;
+	font-size: 14px;
+	bottom: 0px;
+	left: calc(100% / 2 - 425px);
+	width: 850px;
+	height: 450px;
+	z-index: 0;
+	transition: 0.5s;
+	transition-timing-function: ease-in-out;
+	transform: translateY(390px);
+}
+
+#coordinatesButton {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 175px;
+	height: 60px;
+	cursor: pointer;
+	background-color: transparent;
+	border: none;
+	color: white;
+	font-size: 18px;
+	font-weight: bolder;
+	text-align: center;
+	z-index: 10;
+	background:rgba(0,0,0,0.5);
+	text-align: center;
+}
+
+#coordinatesButtonImg {
+	filter: invert(100%);
+	transform: rotate(270deg);
+	transition: 0.5s;
+	transition-timing-function: ease-in-out;
+}
+
+#coordinatesTable {
+	width: 100%;
+	background-color: rgba(0,0,0,0.5);
+	height: 390px;
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid #ffffff;
+}
+
+.tdCoordTable {
+	border: 1px solid #ffffff;
+}
+
+.tdCoordTableValue, .tdCoordTableValueBottom {
+	font-size: 12px;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+}
+
+.tdCoordTableBottom, .tdCoordTableValueBottom {
+	border-bottom: 1px solid #ffffff;
+}
+
+/* ***** TOOLTIP ***** */
+.TooltipButtonBottom, .BSARTooltipButton {
+	visibility: hidden;
+	width: 120px;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 20;
+	top: 150%;
+	left: 50%;
+	margin-left: -60px;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.BSARTooltipButton {
+	width: 150px;
+	top: 70px;
+	left: 210px; /* half BSARbutton width + one button width */ 
+	margin-left: -75px;
+}
+
+.TooltipButtonBottom::after, .BSARTooltipButton::after {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent white transparent;
+}
+
+.BSARMenuButton:hover span {
+	visibility: visible;
+}
+
+/* The switch - the box around the slider */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 98px;
+	height: 34px;
+	background-color: transparent;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+/* The slider */
+.slider-sight {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 5px;
+	background-color: #000000;
+	text-align: center;
+	color: #ffffff;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 0.2s;
+}
+
+.slider-sight:hover {
+	box-shadow: 0 0 0 2px #ffffff inset;
+	-webkit-transition: none;
+	-moz-transition: none;
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
+.slider-sight:before {
+	position: absolute;
+	content: "right";
+	height: 32px;
+	width: 47px;
+	right: 1px;
+	bottom: 1px;
+	border-radius: 5px;
+	background-color: #ffffff;
+	color: #000000;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 0.2s;
+}
+
+input:checked + .slider-sight:before {
+	content: "left";
+	color: #000000;
+	transform: translateX(-49px);
+}
+
+/* ***** LOADER div ***** */
+.loadingContainer {
+	z-index:100;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: calc(100%/2 - 100px);
+	left: calc(100%/2 - 100px);
+	width: 200px;
+	height: 200px;
+	margin: 0 auto;
+	background-size: cover;
+	background-color: transparent;
+	background-image: url("../img/icons/loader.svg");
+}
+
+/* ***** LINKS ***** */
+.aLink, .aLink:link, .aLink:visited {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.aLink:hover {
+	text-decoration: underline;
+}

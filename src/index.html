@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- HEADER -->
+    <head>
+        <meta content="text/html">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./css/bsarconf.css">
+        <link rel="icon" href="./img/icons/bsarconflogo.svg" sizes="any" type="image/svg+xml">
+        <title>BSARconf - Bistatic SAR configurator</title>
+        <meta name="keywords"
+              content="bistatic, Synthetic Aperture Radar, SAR, configurator, monostatic,
+                       bistatique, radar à synthèse d'ouverture, RSO, configurateur, monostatique">
+        <meta name="robots" content="index">
+        <meta name="robots" content="follow">
+    </head>
+    <!-- END OF HEADER -->
+
+    <!-- BODY -->
+    <body>
+        <!-- ****************************** Three.js canvas ****************************** -->
+        <canvas id="sceneCanvas" class="canvas"></canvas>
+
+        <!-- ****************************** Header ****************************** -->
+        <div id="header" class="header">
+          <button type="button" id="TxToRxButton" class="BSARMenuButton">
+            <div class="ImgButton TxtoRxIcon">
+              <span class="TooltipButtonBottom">Tx to Rx config.</span>
+            </div>
+          </button>
+          <button type="button" id="BSARbutton" class="BSARMenuButton">
+            Bistatic SAR configurator&ensp;
+            <img id="BSARbuttonImg" class="BSARbuttonImg" src="./img/icons/arrow-contour.svg" width="18px">
+            <span class="BSARTooltipButton">Show / Hide BSAR infos</span>
+          </button>
+          <button type="button" id="LoadButton" class="BSARMenuButton">
+            <input id="FileInput" type="file" accept=".json" style="display:none;"/>
+            <div class="ImgButton LoadIcon">
+              <span class="TooltipButtonBottom">Load configuration</span>
+            </div>
+          </button>
+          <button type="button" id="SaveButton", class="BSARMenuButton">
+            <div class="ImgButton SaveIcon">
+              <span class="TooltipButtonBottom">Save configuration</span>
+            </div>
+          </button>
+          <button type="button" id="ScreenshotButton", class="BSARMenuButton">
+            <div class="ImgButton ScreenshotIcon">
+              <span class="TooltipButtonBottom">Take a screenshot</span>
+            </div>
+          </button>
+          <button type="button" id="DocumentationButton", class="BSARMenuButton">
+            <div class="ImgButton DocumentationIcon">
+              <span class="TooltipButtonBottom">Documentation</span>
+            </div>
+          </button>
+        </div>
+        <!-------------------------------------------------------------------------->
+
+        <!-- ****************************** DROP ZONE ****************************** -->
+        <div id="DropZone" class="DropZone">
+          Drop your configuration file here
+        </div>
+        <!----------------------------------------------------------------------------->
+
+        <!-- ****************************** TX INPUTS ****************************** -->
+        <div id="TxMenu" class="leftDiv">
+          <div id="TxInputDiv">
+            <!--------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------- CARRIER --------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------->
+            <button type="button" class="TxInputButton"
+                    onclick="toggleTableInput('TxCarrierTable')">CARRIER
+            </button>
+            <table id="TxCarrierTable" class="TxInputTable">
+              <!-- Altitude -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxAltitude">Altitude:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxAltitude" name="TxAltitude"
+                        placeholder="0 - 40000000 m"
+                        min="0" max="40000000" step="any" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+                <!-- CARRIER Velocity -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxVelocity">Velocity:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxVelocity" name="TxVelocity"
+                        placeholder="0 - 10000 m/s."
+                          min="0" max="10000" step="any" required>
+                  <span></span>
+                  <span>m/s</span>
+                </td>
+              </tr>
+                <!-- CARRIER Heading -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxHeading">Heading:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxHeading" name="TxHeading"
+                        placeholder="0 - 360°"
+                        min="0" max="360" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+                <!-- CARRIER Roll -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxRoll">Roll:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxRoll" name="TxRoll"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+                <!-- CARRIER Pitch -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxPitch">Pitch:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxPitch" name="TxPitch"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+            </table>
+            <!--------------------------------------------------------------------------------------------------------------->
+
+            <!--------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------- ANTENNA --------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------->
+            <button type="button" class="TxInputButton"
+                    onclick="toggleTableInput('TxAntennaTable')">
+                    ANTENNA
+            </button>
+            <table id="TxAntennaTable" class="TxInputTable">
+              <tr>
+                <th colspan="2" class="thInputText">Orientation</th>
+              </tr>
+              <!-- Nominal incidence -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxIncidence">Incidence:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxIncidence" name="TxIncidence"
+                        placeholder="0 - 89°"
+                        min="0" max="89" step="any" required> 
+                <span></span>
+                <span>°</span>
+                </td>
+              </tr>
+              <!-- Antenna Squint -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxAntennaSquint">Ant. Squint:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxAntennaSquint" name="TxAntennaSquint"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!-- Ground Squint -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxGroundSquint">Ground Squint:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxGroundSquint" name="TxGroundSquint"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!-- Sight -->
+              <tr>
+                <td class="tdInputText">Sight:</td>
+                <td>
+                  <label class="switch">
+                    <input type="checkbox" id="TxSight">
+                    <span class="slider-sight">left right</span>
+                  </label>
+                </td>
+              </tr>
+              <!--- LEVER ARM -->
+              <tr>
+                <th colspan="2" class="thInputText">Lever arm</th>
+              </tr>
+                <!-- Lever X -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxLeverX">X:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxLeverX" name="TxLeverX"
+                        placeholder="-100 - 100 m"
+                        min="-100" max="100" step="any" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+                <!-- Lever Y -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxLeverY">Y:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxLeverY" name="TxLeverY"
+                        placeholder="-100 - 100 m"
+                        min="-100" max="100" step="any" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+                  <!-- Lever Z -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxLeverZ">Z:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxLeverZ" name="TxLeverZ"
+                        placeholder="-100 - 100 m"
+                        min="-100" max="100" step="any" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+              <!--- 3dB APERTURE -->
+              <tr>
+                <th colspan="2" class="thInputText">Beam width [half-power]</th>
+              </tr>
+              <!-- Elevation -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxElvBeamWidth">Elevation:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxElvBeamWidth" name="TxElvBeamWidth"
+                        placeholder="0.001 - 89°"
+                        min="0.001" max="89" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!-- Azimuth -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxAziBeamWidth">Azimuth:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxAziBeamWidth" name="TxAziBeamWidth"
+                        placeholder=".001 - 89°"
+                        min="0.001" max="89" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!--- GAINS -->
+              <tr>
+                <th colspan="2" class="thInputText">Gain [one-way]</th>
+              </tr>
+                <!-- Antenna gains -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxGainTx">Tx:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxGainTx" name="TxGainTx"
+                        placeholder="0 - 100 dBi"
+                        min="0" max="100" step="any" >
+                  <span></span>
+                  <span>dBi</span>
+                </td>
+              </tr>
+            </table>
+            <!--------------------------------------------------------------------------------------------------------------->
+
+            <!--------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------- SYSTEM ---------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------->
+            <button type="button" class="TxInputButton"
+                    onclick="toggleTableInput('TxSystemTable')">
+                    SYSTEM
+            </button>
+            <table id="TxSystemTable" class="TxInputTable">
+              <!-- Center frequency -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxCenterFrequency">Center freq.:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxCenterFrequency" name="TxCenterFrequency"
+                        placeholder="0.1 - 100 GHz"
+                        min="0.1" max="100" step="any" required>
+                  <span></span>
+                  <span>GHz</span>
+                </td>
+              </tr>
+              <!-- Bandwidth -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxBandwidth">Bandwidth:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxBandwidth" name="TxBandwidth"
+                        placeholder="1 - 10000 MHz"
+                        min="1" max="10000" step="any" required>
+                  <span></span>
+                  <span>MHz</span>
+                </td>
+              </tr>
+              <!-- Pulse duration -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxPulseDuration">Pulse dur.:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxPulseDuration" name="TxPulseDuration"
+                        placeholder="0 - 100000 µs"
+                        min="0" max="100000" step="any" required>
+                  <span></span>
+                  <span>µs</span>
+                </td>
+              </tr>
+              <!-- PRI -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxPRI">PRI:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxPRI" name="TxPRI"
+                        placeholder="0 - 100000 µs"
+                        min="0" max="100000" step="any" required>
+                  <span></span>
+                  <span>µs</span>
+                </td>
+              </tr>              
+              <!-- Peak power -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxPeakPower">Peak power:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxPeakPower" name="TxPeakPower"
+                        placeholder="0 - 10000 W"
+                        min="0" max="10000" step="any" required>
+                  <span></span>
+                  <span>W</span>
+                </td>
+              </tr>
+              <!-- Loss factor -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="TxLossFactor">Loss factor:</label>
+                </td>
+                <td>
+                  <input type="number" id="TxLossFactor" name="TxLossFactor"
+                        placeholder="0 - 100 dB"
+                        min="0" max="100" step="any" required>
+                  <span></span>
+                  <span>dB</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- TX MENU BUTTON -->
+          <button type="button" id="TxButton">
+            TX</br>
+            <img id="TxButtonImg" src="./img/icons/arrow-contour.svg" width="16px">
+          </button>
+        </div> <!-- Left div -->
+
+        <!-- ****************************** RX INPUTS ****************************** -->
+        <div id="RxMenu" class="rightDiv">
+          <!-- RX MENU BUTTON -->
+          <button type="button" id="RxButton">
+            RX</br>
+            <img id="RxButtonImg" src="./img/icons/arrow-contour.svg" width="16px">
+          </button> 
+
+          <div id="RxInputDiv">
+            <!--------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------- CARRIER --------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------->
+            <button type="button" class="MenuButton"
+                          onclick="toggleTableInput('RxCarrierTable')">
+                          CARRIER
+            </button>
+            <table id="RxCarrierTable" class="RxInputTable">
+              <!-- Altitude -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxAltitude">Altitude:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxAltitude" name="RxAltitude"
+                        placeholder="0 - 40000000 m"
+                        min="0" max="40000000" step="any" value="1000" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+                <!-- CARRIER Velocity -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxVelocity">Velocity:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxVelocity" name="RxVelocity"
+                        placeholder="0 - 10000 m/s."
+                          min="0" max="10000" step="any" value="36" required>
+                  <span></span>
+                  <span>m/s</span>
+                </td>
+              </tr>
+                <!-- CARRIER Heading -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxHeading">Heading:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxHeading" name="RxHeading"
+                        placeholder="0 - 360°"
+                        min="0" max="360" step="any" value="0" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+                <!-- CARRIER Roll -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxRoll">Roll:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxRoll" name="RxRoll"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" value="0" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+                <!-- CARRIER Pitch -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxPitch">Pitch:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxPitch" name="RxPitch"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" value="0" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+            </table>
+            <!--------------------------------------------------------------------------------------------------------------->
+
+            <!--------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------- ANTENNA --------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------->
+            <button type="button" class="MenuButton"
+                    onclick="toggleTableInput('RxAntennaTable')">
+                    ANTENNA
+            </button>
+            <table id="RxAntennaTable" class="RxInputTable">
+              <tr>
+                <th colspan="2" class="thInputText">Orientation</th>
+              </tr>
+              <!-- Nominal incidence -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxIncidence">Incidence:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxIncidence" name="RxIncidence"
+                        placeholder="0 - 89°"
+                        min="0" max="89" step="any" value="45" required> 
+                <span></span>
+                <span>°</span>
+                </td>
+              </tr>
+              <!-- Antenna Squint -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxAntennaSquint">Ant. Squint:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxAntennaSquint" name="RxAntennaSquint"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" value="0" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!-- Ground Squint -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxGroundSquint">Ground Squint:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxGroundSquint" name="RxGroundSquint"
+                        placeholder="-90 - 90°"
+                        min="-90" max="90" step="any" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!-- Sight -->
+              <tr>
+                <td class="tdInputText">Sight:</td>
+                <td>
+                  <label class="switch">
+                    <input type="checkbox" id="RxSight">
+                    <span class="slider-sight">left right</span>
+                  </label>
+                </td>
+              </tr>
+              <!--- LEVER ARM -->
+              <tr>
+                <th colspan="2" class="thInputText">Lever arm</th>
+              </tr>
+                <!-- Lever X -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxLeverX">X:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxLeverX" name="RxLeverX"
+                        placeholder="-100 - 100 m"
+                        min="-100" max="100" step="any"  value="0" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+                <!-- Lever Y -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxLeverY">Y:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxLeverY" name="RxLeverY"
+                        placeholder="-100 - 100 m"
+                        min="-100" max="100" step="any"  value="0" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+                  <!-- Lever Z -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxLeverZ">Z:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxLeverZ" name="RxLeverZ"
+                        placeholder="-100 - 100 m"
+                        min="-100" max="100" step="any"  value="0" required>
+                  <span></span>
+                  <span>m</span>
+                </td>
+              </tr>
+              <!--- 3dB APERTURE -->
+              <tr>
+                <th colspan="2" class="thInputText">Beam width [half-power]</th>
+              </tr>
+              <!-- Elevation -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxElvBeamWidth">Elevation:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxElvBeamWidth" name="RxElvBeamWidth"
+                        placeholder="0.001 - 89°"
+                        min="0.001" max="89" step="any"  value="16" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!-- Azimuth -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxAziBeamWidth">Azimuth:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxAziBeamWidth" name="RxAziBeamWidth"
+                        placeholder="0.001 - 89°"
+                        min="0.001" max="89" step="any"  value="16" required>
+                  <span></span>
+                  <span>°</span>
+                </td>
+              </tr>
+              <!--- GAINS -->
+              <tr>
+                <th colspan="2" class="thInputText">Gain [one-way]</th>
+              </tr>
+                <!-- Antenna gains -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxGainRx">Rx:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxGainRx" name="RxGainRx"
+                        placeholder="0 - 100 dBi"
+                        min="0" max="100" step="any"  value="20" required>
+                  <span></span>
+                  <span>dBi</span>
+                </td>
+              </tr>
+            </table>
+            <!--------------------------------------------------------------------------------------------------------------->
+
+            <!--------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------- SYSTEM ---------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------->
+            <button type="button" class="MenuButton"
+                    onclick="toggleTableInput('RxSystemTable')">
+                    SYSTEM
+            </button>
+            <table id="RxSystemTable" class="RxInputTable">
+              <!-- Noise temperature -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxNoiseTemperature">Noise temp.:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxNoiseTemperature" name="RxNoiseTemperature"
+                        placeholder="0 - 500 K"
+                        min="0" max="500" step="any" required>
+                  <span></span>
+                  <span>K</span>
+                </td>
+              </tr>
+              <!-- Loss factor -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxNoiseFactor">Noise factor:</label>
+                </td>
+                <td>
+                  <input type="number" id="RxNoiseFactor" name="RxNoiseFactor"
+                         placeholder="0 - 100 dB"
+                         min="0" max="100" step="any" required>
+                  <span></span>
+                  <span>dB</span>
+                </td>
+              </tr>
+              <!-- Integration time -->
+              <tr>
+                <td class="tdInputText">
+                  <label for="RxIntegrationTime">Integ. time:</label>
+                </td>
+                <td>
+                  <input type="text" id="RxIntegrationTime" name="RxIntegrationTime"
+                         placeholder="auto-ground, auto-slant or 0 - 3600 s" required>
+                  <span></span>
+                  <span>s</span>
+                </td>
+              </tr>      
+            </table>
+          </div>
+        </div> <!-- Right div -->
+
+        <!-- ****************************** TX INFOS ****************************** -->
+        <div id="TxInfos" class="txInfosDiv">
+          <table id="TxInfosTable" class="InfosTable" cellspacing="0" cellpadding="1">
+            <tr>
+              <th colspan="3" class="thInputText">Tx Infos [half-power]</th>
+            </tr>
+            <!-- Slant range -->
+            <tr>
+              <td rowspan="3" class="tdInputText"
+                  style="border: solid 0 #ffffff;border-right-width:1px;">Slant range&nbsp;</td>
+              <td class="tdInputText">min:</td>
+              <td id="TxInfosRangeMin"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">&nbsp;center:</td>
+              <td id="TxInfosRangeAtSwathCenter"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">max:</td>
+              <td id="TxInfosRangeMax"></td>
+            </tr>
+            <!-- Local incidence -->
+            <tr>
+              <td rowspan="3" class="tdInputText"
+                  style="border: solid 0 #ffffff;border-right-width:1px;">Local incidence&nbsp;</td>
+              <td class="tdInputText">min:</td>
+              <td id="TxInfosLocalIncidenceMin"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">&nbsp;center:</td>
+              <td id="TxInfosLocalIncidenceCenter"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">max:</td>
+              <td id="TxInfosLocalIncidenceMax"></td>
+            </tr>
+            <!-- Antenna squint -->
+            <tr>
+              <td colspan="2" class="tdInputText">Antenna squint:</td>
+              <td id="TxInfosAntennaSquint"></td>
+            </tr>
+            <!-- Ground range swath -->
+            <tr>
+              <td colspan="2" class="tdInputText">Ground range swath:</td>
+              <td id="TxInfosGroundRangeSwath"></td>
+            </tr>
+            <!-- Footprint area -->
+            <tr>
+              <td colspan="2" class="tdInputText">Footprint area:</td>
+              <td id="TxInfosFootprintArea"></td>
+            </tr>
+            <!-- Illumination time -->
+            <tr>
+              <td colspan="2" class="tdInputText">Illumination time:</td>
+              <td id="TxInfosIlluminationTime"></td>
+            </tr>
+            <!-- Ground angular velocity -->
+            <tr>
+              <td colspan="2" class="tdInputText">Ground angular velocity:</td>
+              <td id="TxInfosGroundAngularVelocity"></td>
+            </tr>
+          </table>
+        </div>
+        <!--------------------------------------------------------------------------------------------------------------->
+
+        <!-- ****************************** RX INFOS ****************************** -->
+        <div id="RxInfos" class="rxInfosDiv">
+          <table id="RxInfosTable" class="InfosTable" cellspacing="0" cellpadding="1">
+            <tr>
+              <th colspan="3" class="thInputText">Rx Infos [half-power]</th>
+            </tr>
+            <!-- Slant range -->
+            <tr>
+              <td rowspan="3" class="tdInputText"
+                  style="border: solid 0 #ffffff;border-right-width:1px;">Slant range&nbsp;</td>
+              <td class="tdInputText">min:</td>
+              <td id="RxInfosRangeMin"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">&nbsp;center:</td>
+              <td id="RxInfosRangeAtSwathCenter"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">max:</td>
+              <td id="RxInfosRangeMax"></td>
+            </tr>
+            <!-- Local incidence -->
+            <tr>
+              <td rowspan="3" class="tdInputText"
+                  style="border: solid 0 #ffffff;border-right-width:1px;">Local incidence&nbsp;</td>
+              <td class="tdInputText">min:</td>
+              <td id="RxInfosLocalIncidenceMin"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">&nbsp;center:</td>
+              <td id="RxInfosLocalIncidenceCenter"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">max:</td>
+              <td id="RxInfosLocalIncidenceMax"></td>
+            </tr>
+            <!-- Antenna squint -->
+            <tr>
+              <td colspan="2" class="tdInputText">Antenna squint:</td>
+              <td id="RxInfosAntennaSquint"></td>
+            </tr>
+            <!-- Ground range swath -->
+            <tr>
+              <td colspan="2" class="tdInputText">Ground range swath:</td>
+              <td id="RxInfosGroundRangeSwath"></td>
+            </tr>
+            <!-- Footprint area -->
+            <tr>
+              <td colspan="2" class="tdInputText">Footprint area:</td>
+              <td id="RxInfosFootprintArea"></td>
+            </tr>
+            <!-- Illumination time -->
+            <tr>
+              <td colspan="2" class="tdInputText">Illumination time:</td>
+              <td id="RxInfosIlluminationTime"></td>
+            </tr>
+            <!-- Ground angular velocity -->
+            <tr>
+              <td colspan="2" class="tdInputText">Ground angular velocity:</td>
+              <td id="RxInfosGroundAngularVelocity"></td>
+            </tr>
+          </table>
+        </div>
+        <!--------------------------------------------------------------------------------------------------------------->
+
+        <!-- ****************************** BSAR INFOS ****************************** -->
+        <div id="BSARInfos" class="BSARInfosDiv" cellspacing="0" cellpadding="1">
+          <table id="BSARInfosTable" class="InfosTable">
+            <tr>
+              <th colspan="3" class="thInputText">BSAR Infos (center) [half-power]</th>
+            </tr>
+            <!-- Slant range -->
+            <tr>
+              <td rowspan="3" class="tdInputText"
+                  style="border: solid 0 #ffffff;border-right-width:1px;">Slant range&nbsp;</td>
+              <td class="tdInputText">min:</td>
+              <td id="BSARInfosRangeMin"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">&nbsp;center:</td>
+              <td id="BSARInfosRangeAtSwathCenter"></td>
+            </tr>
+            <tr>
+              <td class="tdInputText">max:</td>
+              <td id="BSARInfosRangeMax"></td>
+            </tr>
+            <!-- Tx/Rx range -->
+            <tr>
+              <td colspan="2" class="tdInputText">Tx/Rx direct range:</td>
+              <td id="BSARInfosTxRxRange"></td>
+            </tr>
+            <!-- Bistatic angle -->
+            <tr>
+              <td colspan="2" class="tdInputText">Bistatic angle:</td>
+              <td id="BSARInfosBistaticAngle"></td>
+            </tr>            
+            <!-- Resolutions -->
+            <tr>
+              <td colspan="2" class="tdInputText">Slant range res.:</td>
+              <td id="BSARInfosSlantRangeRes"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Slant lateral res.:</td>
+              <td id="BSARInfosSlantLateralRes"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Ground range res.:</td>
+              <td id="BSARInfosGroundRangeRes"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Ground lateral res.:</td>
+              <td id="BSARInfosGroundLateralRes"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Resolution area:</td>
+              <td id="BSARInfosResArea"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Doppler frequency:</td>
+              <td id="BSARInfosDopplerFrequency"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Doppler rate:</td>
+              <td id="BSARInfosDopplerRate"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Integration time:</td>
+              <td id="BSARInfosIntegrationTime"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">Processed Dop. band.:</td>
+              <td id="BSARInfosProcessedDopplerBandwidth"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">NESZ:</td>
+              <td id="BSARInfosNESZ"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">PRI min.:</td>
+              <td id="BSARInfosPRImin"></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="tdInputText">PRI max.:</td>
+              <td id="BSARInfosPRImax"></td>
+            </tr>
+          </table>
+        </div>
+        <!--------------------------------------------------------------------------------------------------------------->
+
+        <!-- ****************************** COORDINATES ****************************** -->
+        <div id="Coordinates">
+          <button type="button" id="coordinatesButton">
+            Coordinates&ensp;
+            <img id="coordinatesButtonImg" src="./img/icons/arrow-contour.svg" width="18px">
+            <!-- <span class="BSARTooltipButton">Show / Hide BSAR infos</span> -->
+          </button>
+          <table id="coordinatesTable" cellspacing="0">
+            <!-- Local ENU origin -->
+            <tr style="height:50px">
+              <td colspan="3" >
+                <a href="https://en.wikipedia.org/wiki/Local_tangent_plane_coordinates"
+                   target="_blank" class="aLink">Local ENU</a>
+                origin
+                (<a href="https://epsg.org/ellipsoid_7030/WGS-84.html"
+                    target="_blank" class="aLink">WGS84 Ellipsoid</a>)
+              </td>
+              <td >
+                <label for="ENUorigLonDD">lon:</label>
+                <input type="number" id="ENUorigLonDD" name="ENUorigLonDD"
+                       class="coordinatesInput"
+                       placeholder="-180 - 180°"
+                       min="-180" max="180" step="any" required>
+                <span></span>
+                <span>°</span>
+              </td>
+              <td>
+                <label for="ENUorigLatDD">lat:</label>
+                <input type="number" id="ENUorigLatDD" name="ENUorigLatDD"
+                       class="coordinatesInput"
+                       placeholder="-90 - 90°"
+                       min="-90" max="90" step="any" required>
+                <span></span>
+                <span>°</span>
+              </td>
+              <td>
+                <label for="ENUorigAltDD">alt:</label>
+                <input type="number" id="ENUorigAltDD" name="ENUorigAltDD"
+                       class="coordinatesInput"
+                       placeholder="-6300 - 30000 km"
+                       min="-6300000" max="30000000" step="any" required>
+                <span></span>
+                <span>m</span>
+              </td>
+            </tr>
+            <!-- -->
+            <tr>
+              <td colspan="2" class="tdCoordTable">Coordinates</td>
+              <td class="tdCoordTable" style="width:170px;">Tx pos. [°][m]</td>
+              <td class="tdCoordTable">Tx vel. [m/s]</td>
+              <td class="tdCoordTable">Rx pos. [°][m]</td>
+              <td class="tdCoordTable">Rx vel. [m/s]</td>
+            </tr>
+            <!-- Local ENU -->
+            <tr>
+              <td rowspan="3" class="tdCoordTableBottom">
+                <a href="https://en.wikipedia.org/wiki/Local_tangent_plane_coordinates"
+                   target="_blank" class="aLink">Local ENU</a>
+              </td>
+              <td>x</td>
+              <td id="coordENUTxPosx" class="tdCoordTableValue"></td>
+              <td id="coordENUTxVelx" class="tdCoordTableValue"></td>
+              <td id="coordENURxPosx" class="tdCoordTableValue"></td>
+              <td id="coordENURxVelx" class="tdCoordTableValue"></td>
+            </tr>
+            <tr>
+              <td>y</td>
+              <td id="coordENUTxPosy" class="tdCoordTableValue"></td>
+              <td id="coordENUTxVely" class="tdCoordTableValue"></td>
+              <td id="coordENURxPosy" class="tdCoordTableValue"></td>
+              <td id="coordENURxVely" class="tdCoordTableValue"></td>
+            </tr>
+            <tr>
+              <td class="tdCoordTableBottom">z</td>
+              <td id="coordENUTxPosz" class="tdCoordTableValueBottom"></td>
+              <td id="coordENUTxVelz" class="tdCoordTableValueBottom"></td>
+              <td id="coordENURxPosz" class="tdCoordTableValueBottom"></td>
+              <td id="coordENURxVelz" class="tdCoordTableValueBottom"></td>
+            </tr>
+            <!-- Geodetic -->
+            <tr>
+              <td rowspan="3" class="tdCoordTableBottom">Geodetic</td>
+              <td>lon</td>
+              <td id="coordGeodTxPosLon" class="tdCoordTableValue"></td>
+              <td class="tdCoordTableValue" style="background-color:rgba(255,255,255,0.6);"></td>
+              <td id="coordGeodRxPosLon" class="tdCoordTableValue"></td>
+              <td class="tdCoordTableValue" style="background-color:rgba(255,255,255,0.6);"></td>
+            </tr>
+            <tr>
+              <td>lat</td>
+              <td id="coordGeodTxPosLat" class="tdCoordTableValue"></td>
+              <td class="tdCoordTableValue" style="background-color:rgba(255,255,255,0.6);"></td>
+              <td id="coordGeodRxPosLat" class="tdCoordTableValue"></td>
+              <td class="tdCoordTableValue" style="background-color:rgba(255,255,255,0.6);"></td>
+            </tr>
+            <tr>
+              <td class="tdCoordTableBottom">alt</td>
+              <td id="coordGeodTxPosAlt" class="tdCoordTableValueBottom"></td>
+              <td class="tdCoordTableValueBottom" style="background-color:rgba(255,255,255,0.6);"></td>
+              <td id="coordGeodRxPosAlt" class="tdCoordTableValueBottom"></td>
+              <td class="tdCoordTableValueBottom" style="background-color:rgba(255,255,255,0.6);"></td>
+            </tr>
+            <!-- ECEF -->
+            <tr>
+              <td rowspan="3" class="tdCoordTableBottom">
+                <a href="https://en.wikipedia.org/wiki/ECEF" target="_blank"
+                   class="aLink">ECEF</a>
+              </td>
+              <td>X</td>
+              <td id="coordECEFTxPosx" class="tdCoordTableValue"></td>
+              <td id="coordECEFTxVelx" class="tdCoordTableValue"></td>
+              <td id="coordECEFRxPosx" class="tdCoordTableValue"></td>
+              <td id="coordECEFRxVelx" class="tdCoordTableValue"></td>
+            </tr>
+            <tr>
+              <td>Y</td>
+              <td id="coordECEFTxPosy" class="tdCoordTableValue"></td>
+              <td id="coordECEFTxVely" class="tdCoordTableValue"></td>
+              <td id="coordECEFRxPosy" class="tdCoordTableValue"></td>
+              <td id="coordECEFRxVely" class="tdCoordTableValue"></td>
+            </tr>
+            <tr>
+              <td class="tdCoordTableBottom">Z</td>
+              <td id="coordECEFTxPosz" class="tdCoordTableValueBottom"></td>
+              <td id="coordECEFTxVelz" class="tdCoordTableValueBottom"></td>
+              <td id="coordECEFRxPosz" class="tdCoordTableValueBottom"></td>
+              <td id="coordECEFRxVelz" class="tdCoordTableValueBottom"></td>
+            </tr>
+          </table>
+        </div>
+        <!--------------------------------------------------------------------------------------------------------------->
+
+        <!-- ****************************** PLOTS DIV ****************************** -->
+        <div id="plotIsoRangeDop" class="plotIsoRangeDop"></div>
+        <div id="plotGAFAmp" class="plotGAFAmp"></div>
+        <div id="isoRangeDopPlaneTexture" style="display:none;"></div> <!-- silent div for isoRangeDopPlane texture -->
+        <!----------------------------------------------------------------------------->
+
+        <!-- ****************************** LOAD DIV ****************************** -->
+        <div id="loadingContainer" class="loadingContainer">
+          Loading...
+        </div>
+        <!---------------------------------------------------------------------------->
+
+        <!-- JS scripts -->
+        <script type='module' src='js/scripts/scene.js'></script>
+        <script type='text/javascript' src='js/plotly/plotly-2.5.1.min.js'></script>
+        <!-- Javascript for dynamic HTML -->
+        <script type='text/javascript' src='js/scripts/interact.js'></script>
+        <!-- JS scripts -->
+        
+    </body>
+    <!-- END OF BODY -->
+</html>
