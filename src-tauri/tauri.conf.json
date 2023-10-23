@@ -19,6 +19,12 @@
         "open": true,
         "scope": [],
         "sidecar": false
+      },
+      "process": {
+        "all": false,
+        "exit": true,
+        "relaunch": false,
+        "relaunchDangerousAllowSymlinkMacos": false
       }
     },
     "bundle": {
@@ -46,14 +52,17 @@
         "minWidth": 600,
         "minHeight": 450,
         "fileDropEnabled": false,
-        "visible": false
+        "visible": false,
+        "center": true
       },
       {
         "label": "splashscreen",
+        "title": "BSAR Configurator",
         "url": "./html/splashscreen.html",
         "width": 800,
         "height": 600,
-        "decorations": false
+        "decorations": false,
+        "center": true
       }
     ]
   }

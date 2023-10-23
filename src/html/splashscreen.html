@@ -15,8 +15,7 @@
                 font-size: 16px;
                 line-height: 16px;
             }
-            div {
-                z-index:100;
+            #loader {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -30,15 +29,69 @@
                 background-color: transparent;
                 background-image: url("../img/icons/loader.svg");
             }
+            #closeButton {
+                z-index:10;
+                position: fixed;
+                bottom: 50px;
+                left: calc(100%/2 - 25px);
+                width: 50px;
+                height: 50px;
+                background-color: transparent; /* Green */
+                border: solid transparent;
+                color: black;
+                text-align: center;
+                text-decoration: none;
+                display: none;
+                font-size: 18px;
+                /* transition: border 0.1s; */
+            }
+            #closeButton:hover {
+                border: solid black;
+            }
+            #closeButton:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+            }
+            .tooltip {
+                position: relative;
+                display: inline-block;
+            }
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: rgba(0, 0, 0, 0.5);
+	            color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                position: absolute;
+                z-index: 20;
+                bottom: 200%;
+                left: 50%;
+                margin-left: -60px;
+                font-size: 12px;
+            }
+            .tooltip .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: rgba(0, 0, 0, 0.5) transparent transparent transparent;
+            }
         </style>
     </head>
     <!-- END OF HEADER -->
 
     <!-- BODY -->
     <body>
-        <div>
-            Loading...
-        </div>
-    </body>
+        <div id="loader">Loading...</div>
+        <button id="closeButton">            
+            <div class="tooltip">X
+                <span class="tooltiptext">Exit BSARConf app</span>
+            </div>
+        </button>
+        <script type="module" src="../js/scripts/initapp.js"></script>
     <!-- END OF BODY -->
 </html>
