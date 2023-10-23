@@ -127,25 +127,25 @@ function bistatic_sar_resolution( lem, bandwidth, tx_vec, tx_vel, rx_vec, rx_vel
           dbetag_norm = bisectors.dbetag.length();
     let slant_range_resolution, slant_lateral_resolution,
         ground_range_resolution, ground_lateral_resolution,
-        resolution_area;
+        resolution_area, integration_time;
     if (tint === 'auto-ground') { // estimate tint for ground 'squared' resolutions
-        tint = bandwidth * lem / ct.C0 * betag_norm / dbetag_norm;
+        integration_time = bandwidth * lem / ct.C0 * betag_norm / dbetag_norm;
     } else if (tint === 'auto-slant') { // estimate tint for slant 'squared' resolutions
-        tint = bandwidth * lem / ct.C0 * beta_norm / dbeta_norm;
+        integration_time = bandwidth * lem / ct.C0 * beta_norm / dbeta_norm;
     }
     slant_range_resolution    = ct.RES_FACTOR * ct.C0 / (bandwidth * beta_norm);
-    slant_lateral_resolution  = ct.RES_FACTOR * lem / (tint * dbeta_norm);
+    slant_lateral_resolution  = ct.RES_FACTOR * lem / (integration_time * dbeta_norm);
     ground_range_resolution   = ct.RES_FACTOR * ct.C0 / (bandwidth * betag_norm);
-    ground_lateral_resolution = ct.RES_FACTOR * lem / (tint * dbetag_norm);
+    ground_lateral_resolution = ct.RES_FACTOR * lem / (integration_time * dbetag_norm);
     resolution_area           = ct.RES_AREA_FACTOR * lem * ct.C0 / (
-        bandwidth * tint * bisectors.betag.clone().cross( bisectors.dbetag.clone() ).length());
+        bandwidth * integration_time * bisectors.betag.clone().cross( bisectors.dbetag.clone() ).length());
     return {
         slant_range_resolution:    slant_range_resolution,
         slant_lateral_resolution:  slant_lateral_resolution,
         ground_range_resolution:   ground_range_resolution,
         ground_lateral_resolution: ground_lateral_resolution,
         resolution_area:           resolution_area,
-        tint:                      tint,
+        integration_time:          integration_time,
         bisector_vectors:          bisectors
     };
 }

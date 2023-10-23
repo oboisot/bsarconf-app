@@ -346,35 +346,35 @@ function updateInfos( system, elmts ) {
     // Range at Swath center
     const rangeAtSwathCenter = system.getRangeAtSwathCenter();
     if (rangeAtSwathCenter > 1000.0) {
-        elmts.infos.rangeAtSwathCenter.innerHTML = `${(rangeAtSwathCenter/1000.0).toFixed(3)} km`;
+        elmts.infos.rangeAtSwathCenter.innerHTML = `${(rangeAtSwathCenter*0.001).toFixed(3)} km`;
     } else {
         elmts.infos.rangeAtSwathCenter.innerHTML = `${rangeAtSwathCenter.toFixed(3)} m`;
     }
     // Range min
     const rangeMin = system.getRangeMin();
     if (rangeMin > 1000.0) {
-        elmts.infos.rangeMin.innerHTML = `${(rangeMin/1000.0).toFixed(3)} km`;
+        elmts.infos.rangeMin.innerHTML = `${(rangeMin*0.001).toFixed(3)} km`;
     } else  {
         elmts.infos.rangeMin.innerHTML = `${rangeMin.toFixed(3)} m`;
     }
     // Range max
     const rangeMax = system.getRangeMax();
     if (rangeMax > 1000.0) {
-        elmts.infos.rangeMax.innerHTML = `${(rangeMax/1000.0).toFixed(3)} km`;
+        elmts.infos.rangeMax.innerHTML = `${(rangeMax*0.001).toFixed(3)} km`;
     } else  {
         elmts.infos.rangeMax.innerHTML = `${rangeMax.toFixed(3)} m`;
     }
     // Ground range swath
     const groudRangeSwath = system.getGroundRangeSwath();
     if (groudRangeSwath > 1000.0) {
-        elmts.infos.groundRangeSwath.innerHTML = `${(groudRangeSwath/1000.0).toFixed(3)} km`;
+        elmts.infos.groundRangeSwath.innerHTML = `${(groudRangeSwath*0.001).toFixed(3)} km`;
     } else {
         elmts.infos.groundRangeSwath.innerHTML = `${groudRangeSwath.toFixed(3)} m`;
     }
     // Footprint area
     const footprintArea = system.getFootprintArea();
     if (footprintArea > 100000.0) {
-        elmts.infos.footprintArea.innerHTML = `${(footprintArea/1000000.0).toFixed(3)} km&sup2;`;
+        elmts.infos.footprintArea.innerHTML = `${(footprintArea*0.000001).toFixed(3)} km&sup2;`;
     } else {
         elmts.infos.footprintArea.innerHTML = `${footprintArea.toFixed(3)} m&sup2;`;
     }
@@ -411,11 +411,11 @@ function updateBSARinfos() {
           nesz = bsar.compute_nesz( tx_peak_power, tx_duty_cycle, tx_loss_factor, tx_gain,
                                     rx_temp, rx_noise_factor, rx_gain,
                                     TP, RP, lem,
-                                    bsar_resolutions.tint,
+                                    bsar_resolutions.integration_time,
                                     bsar_resolutions.resolution_area ),
           dopplerFrequency = bsar.doppler_frequency( lem, TP, VT, RP, VR ),
           dopplerRate = bsar.doppler_rate( lem, TP, VT, RP, VR ),
-          dopplerBandwidth = bsar.doppler_bandwidth( dopplerRate, bsar_resolutions.tint ),
+          dopplerBandwidth = bsar.doppler_bandwidth( dopplerRate, bsar_resolutions.integration_time ),
           rangeAtSwathCenter = bsar.bistatic_range( TP, RP ),
           rangeMinMax = bsar.bistatic_range_minmax( TP.clone().negate(),
                                                     RP.clone().negate(),
@@ -424,21 +424,21 @@ function updateBSARinfos() {
     // Bistatic angle
     Elements.bsarInfos.bistaticAngle.innerHTML = `${bistatic_angle.toFixed(3)} °`;
     // Tx-RX range
-    if (tx_rx_range > 1000.0)
-        Elements.bsarInfos.txrxRange.innerHTML = `${(tx_rx_range/1000.0).toFixed(3)} km`;
+    if (tx_rx_range > 1e3)
+        Elements.bsarInfos.txrxRange.innerHTML = `${(tx_rx_range*1e-3).toFixed(3)} km`;
     else
         Elements.bsarInfos.txrxRange.innerHTML = `${tx_rx_range.toFixed(3)} m`;
     // Slant range
-    if (rangeAtSwathCenter > 1000.0)
-        Elements.bsarInfos.rangeAtSwathCenter.innerHTML = `${(rangeAtSwathCenter/1000.0).toFixed(3)} km`;
+    if (rangeAtSwathCenter > 1e3)
+        Elements.bsarInfos.rangeAtSwathCenter.innerHTML = `${(rangeAtSwathCenter*1e-3).toFixed(3)} km`;
     else
         Elements.bsarInfos.rangeAtSwathCenter.innerHTML = `${rangeAtSwathCenter.toFixed(3)} m`;
-    if (rangeMinMax.range_min > 1000.0)
-        Elements.bsarInfos.rangeMin.innerHTML = `${(rangeMinMax.range_min/1000.0).toFixed(3)} km`;
+    if (rangeMinMax.range_min > 1e3)
+        Elements.bsarInfos.rangeMin.innerHTML = `${(rangeMinMax.range_min*1e-3).toFixed(3)} km`;
     else
         Elements.bsarInfos.rangeMin.innerHTML = `${rangeMinMax.range_min.toFixed(3)} m`;
-    if (rangeMinMax.range_max > 1000.0)
-        Elements.bsarInfos.rangeMax.innerHTML = `${(rangeMinMax.range_max/1000.0).toFixed(3)} km`;
+    if (rangeMinMax.range_max > 1e3)
+        Elements.bsarInfos.rangeMax.innerHTML = `${(rangeMinMax.range_max*1e-3).toFixed(3)} km`;
     else
         Elements.bsarInfos.rangeMax.innerHTML = `${rangeMinMax.range_max.toFixed(3)} m`;
     // Slant range resolution
@@ -446,29 +446,29 @@ function updateBSARinfos() {
     // Slant lateral resolution
     if (bsar_resolutions.slant_lateral_resolution > 1e6)
         Elements.bsarInfos.slantLateralRes.innerHTML = '+Inf';
-    else if (bsar_resolutions.slant_lateral_resolution > 1000.0)
-        Elements.bsarInfos.slantLateralRes.innerHTML = `${(bsar_resolutions.slant_lateral_resolution/1000.0).toFixed(3)} km`;
+    else if (bsar_resolutions.slant_lateral_resolution > 1e3)
+        Elements.bsarInfos.slantLateralRes.innerHTML = `${(bsar_resolutions.slant_lateral_resolution*1e-3).toFixed(3)} km`;
     else
         Elements.bsarInfos.slantLateralRes.innerHTML = `${bsar_resolutions.slant_lateral_resolution.toFixed(3)} m`;
     // Ground range resolution
     if (bsar_resolutions.ground_range_resolution > 1e6)
         Elements.bsarInfos.groundRangeRes.innerHTML = '+Inf';
-    else if (bsar_resolutions.ground_range_resolution > 1000.0)
-        Elements.bsarInfos.groundRangeRes.innerHTML = `${(bsar_resolutions.ground_range_resolution/1000.0).toFixed(3)} km`;
+    else if (bsar_resolutions.ground_range_resolution > 1e3)
+        Elements.bsarInfos.groundRangeRes.innerHTML = `${(bsar_resolutions.ground_range_resolution*1e-3).toFixed(3)} km`;
     else
         Elements.bsarInfos.groundRangeRes.innerHTML = `${bsar_resolutions.ground_range_resolution.toFixed(3)} m`;
     // Ground lateral resolution
     if (bsar_resolutions.ground_lateral_resolution > 1e6)
         Elements.bsarInfos.groundLateralRes.innerHTML = '+Inf';
-    else if (bsar_resolutions.ground_lateral_resolution > 1000.0)
-        Elements.bsarInfos.groundLateralRes.innerHTML = `${(bsar_resolutions.ground_lateral_resolution/1000.0).toFixed(3)} km`;
+    else if (bsar_resolutions.ground_lateral_resolution > 1e3)
+        Elements.bsarInfos.groundLateralRes.innerHTML = `${(bsar_resolutions.ground_lateral_resolution*1e-3).toFixed(3)} km`;
     else
         Elements.bsarInfos.groundLateralRes.innerHTML = `${bsar_resolutions.ground_lateral_resolution.toFixed(3)} m`;
     // Resolution area
-    if (bsar_resolutions.resolution_area > 1e6)
+    if (bsar_resolutions.resolution_area > 1e9)
         Elements.bsarInfos.resolutionArea.innerHTML = '+Inf';
-    else if (bsar_resolutions.resolution_area > 1000000.0)
-        Elements.bsarInfos.resolutionArea.innerHTML = `${(bsar_resolutions.resolution_area/1000000.0).toFixed(3)} km&sup2;`;
+    else if (bsar_resolutions.resolution_area > 1e6)
+        Elements.bsarInfos.resolutionArea.innerHTML = `${(bsar_resolutions.resolution_area*1e-6).toFixed(3)} km&sup2;`;
     else
         Elements.bsarInfos.resolutionArea.innerHTML = `${bsar_resolutions.resolution_area.toFixed(3)} m&sup2`;
     // Doppler frequency
@@ -476,7 +476,7 @@ function updateBSARinfos() {
     // Doppler rate
     Elements.bsarInfos.dopplerRate.innerHTML = `${dopplerRate.toFixed(3)} Hz/s`;
     // Integration time
-    Elements.bsarInfos.integrationTime.innerHTML = `${bsar_resolutions.tint.toFixed(3)} s`;
+    Elements.bsarInfos.integrationTime.innerHTML = `${bsar_resolutions.integration_time.toFixed(3)} s`;
     // Doppler bandwidth
     Elements.bsarInfos.processedDopplerBandwidth.innerHTML = `${dopplerBandwidth.toFixed(3)} Hz`;
     // NESZ
