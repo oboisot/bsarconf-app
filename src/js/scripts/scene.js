@@ -98,7 +98,7 @@ function initScene() {
     // ***** Initialisation of TX and RX Carriers *****
     // ***** TX *****
     TxCarrier = new Carrier(
-        BSARConfig.Tx.altitude.value,
+        BSARConfig.Tx.height.value,
         BSARConfig.Tx.velocity.value,
         BSARConfig.Tx.heading.value,
         BSARConfig.Tx.roll.value,
@@ -117,7 +117,7 @@ function initScene() {
 
     // ***** RX *****
     RxCarrier = new Carrier(
-        BSARConfig.Rx.altitude.value,
+        BSARConfig.Rx.height.value,
         BSARConfig.Rx.velocity.value,
         BSARConfig.Rx.heading.value,
         BSARConfig.Rx.roll.value,

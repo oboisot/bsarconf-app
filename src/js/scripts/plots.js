@@ -418,7 +418,7 @@ function drawGAFIntensity( TxCarrier, RxCarrier, fem, bandwidth, tint, plot_div,
     }
     const xaxis = bsar.linspaced_array( -xmax, xmax, size );
     const B_C0 = bandwidth / C0,
-          tint_lem = bsar_resolutions.tint / lem,
+          tint_lem = bsar_resolutions.integration_time / lem,
           betag = bsar_resolutions.bisector_vectors.betag.clone(),
           dbetag = bsar_resolutions.bisector_vectors.dbetag.clone();
     const r = new THREE.Vector3(); // Vector PP', here = OP

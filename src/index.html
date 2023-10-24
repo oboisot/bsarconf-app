@@ -76,10 +76,10 @@
               <!-- Altitude -->
               <tr>
                 <td class="tdInputText">
-                  <label for="TxAltitude">Altitude:</label>
+                  <label for="TxHeight">Height:</label>
                 </td>
                 <td>
-                  <input type="number" id="TxAltitude" name="TxAltitude"
+                  <input type="number" id="TxHeight" name="TxHeight"
                         placeholder="0 - 40000000 m"
                         min="0" max="40000000" step="any" required>
                   <span></span>
@@ -112,26 +112,26 @@
                   <span>°</span>
                 </td>
               </tr>
-                <!-- CARRIER Roll -->
+                <!-- CARRIER Elevation -->
               <tr>
                 <td class="tdInputText">
-                  <label for="TxRoll">Roll:</label>
+                  <label for="TxPitch">Elevation:</label>
                 </td>
                 <td>
-                  <input type="number" id="TxRoll" name="TxRoll"
+                  <input type="number" id="TxPitch" name="TxPitch"
                         placeholder="-90 - 90°"
                         min="-90" max="90" step="any" required>
                   <span></span>
                   <span>°</span>
                 </td>
               </tr>
-                <!-- CARRIER Pitch -->
+                <!-- CARRIER Bank (Roll) -->
               <tr>
                 <td class="tdInputText">
-                  <label for="TxPitch">Pitch:</label>
+                  <label for="TxRoll">Bank:</label>
                 </td>
                 <td>
-                  <input type="number" id="TxPitch" name="TxPitch"
+                  <input type="number" id="TxRoll" name="TxRoll"
                         placeholder="-90 - 90°"
                         min="-90" max="90" step="any" required>
                   <span></span>
@@ -409,10 +409,10 @@
               <!-- Altitude -->
               <tr>
                 <td class="tdInputText">
-                  <label for="RxAltitude">Altitude:</label>
+                  <label for="RxHeight">Height:</label>
                 </td>
                 <td>
-                  <input type="number" id="RxAltitude" name="RxAltitude"
+                  <input type="number" id="RxHeight" name="RxHeight"
                         placeholder="0 - 40000000 m"
                         min="0" max="40000000" step="any" value="1000" required>
                   <span></span>
@@ -972,7 +972,7 @@
             </tr>
             <!-- Geodetic -->
             <tr>
-              <td rowspan="3" class="tdCoordTableBottom">Geodetic</td>
+              <td rowspan="3" class="tdCoordTableBottom">Geographic</td>
               <td>lon</td>
               <td id="coordGeodTxPosLon" class="tdCoordTableValue"></td>
               <td class="tdCoordTableValue" style="background-color:rgba(255,255,255,0.6);"></td>
@@ -987,7 +987,7 @@
               <td class="tdCoordTableValue" style="background-color:rgba(255,255,255,0.6);"></td>
             </tr>
             <tr>
-              <td class="tdCoordTableBottom">alt</td>
+              <td class="tdCoordTableBottom">height</td>
               <td id="coordGeodTxPosAlt" class="tdCoordTableValueBottom"></td>
               <td class="tdCoordTableValueBottom" style="background-color:rgba(255,255,255,0.6);"></td>
               <td id="coordGeodRxPosAlt" class="tdCoordTableValueBottom"></td>
@@ -996,7 +996,7 @@
             <!-- ECEF -->
             <tr>
               <td rowspan="3" class="tdCoordTableBottom">
-                <a href="https://en.wikipedia.org/wiki/ECEF" target="_blank"
+                <a href="https://en.wikipedia.org/wiki/Earth-centered,_Earth-fixed_coordinate_system" target="_blank"
                    class="aLink">ECEF</a>
               </td>
               <td>X</td>

@@ -5,7 +5,7 @@ export { Carrier, IsoRangeSurface, Axes };
 
 class Carrier {
     /* */
-    constructor(altitude=3000, velocity=120,
+    constructor(height=3000, velocity=120,
                 heading=0, roll=0, pitch=0,
                 incidence=45, ant_squint=0, ground_squint=0,
                 sight=true,
@@ -36,7 +36,7 @@ class Carrier {
         this._footprint_size             = 2501; // must be a multiple of 4 for antenna angle lines computation (see 'this._antenna_angles_lines_index')
         this._antenna_angles_lines_index = 625;
         // ***** Create a new carrier *****
-        this._altitude      = altitude;
+        this._height        = height;
         this._velocity      = velocity;
         this._roll          = roll * ct.DEG_TO_RAD;
         this._pitch         = pitch * ct.DEG_TO_RAD;
@@ -65,7 +65,7 @@ class Carrier {
 
         // ***** Carrier referential *****
         this.carrier.visible = true;
-        this.carrier.position.set( 0, 0, this._altitude );
+        this.carrier.position.set( 0, 0, this._height );
         this.carrier.rotateZ( this._heading ) // Cap
                     .rotateY( this._roll )    // Roll
                     .rotateX( this._pitch );  // Pitch
@@ -167,8 +167,8 @@ class Carrier {
         return this.carrier.position;
     }
 
-    getCarrierAltitude() {
-        return this._altitude;
+    getCarrierHeight() {
+        return this._height;
     }
 
     getCarrierVelocity() {
@@ -267,8 +267,8 @@ class Carrier {
         this.beam.material.opacity = opacity;
     }
     
-    setCarrierAltitude(altitude) {
-        this._altitude = altitude;
+    setCarrierHeight(height) {
+        this._height = height;
         this.carrierPosForSwathCenterAtWorldOrigin();
         this.updateFootprint();
     }
@@ -423,8 +423,8 @@ class Carrier {
     }
 
     setValueSelector( str_value, value ) { // For onchange bindings
-        if ( str_value === 'altitude' ) {
-            this.setCarrierAltitude( value );
+        if ( str_value === 'height' ) {
+            this.setCarrierHeight( value );
         }
         if ( str_value === 'velocity' ) {
             this.setCarrierVelocity( value );
@@ -485,7 +485,7 @@ class Carrier {
     carrierPosForSwathCenterAtWorldOrigin() {
         // Translate Carrier position to have Antenna beam center at center of referential:
         // -> compute line-plane intersection of Antenna beam considering Carrier at position
-        // (0, 0, altitude) then apply opposite translation (taking into account Antenna position
+        // (0, 0, height) then apply opposite translation (taking into account Antenna position
         // in Carrier referential)
         this.carrier.updateMatrixWorld( true ); // Update Carrier and its children World Matrix
         this._beamAxisWorld.copy( this._xAxis ).applyMatrix3( this.antenna.matrixWorld ); // Get beam axis in World referential
@@ -495,9 +495,9 @@ class Carrier {
             this.carrier.getWorldPosition( OC );
             this.antenna.getWorldPosition( CA ); // get antenna World position (OA)
             CA.sub( OC );                        // Carrier -> Antenna vector in World referential: CA = OA - OC           
-            this.carrier.position.set( ( this._altitude + CA.z) * this._beamAxisWorld.x / this._beamAxisWorld.z - CA.x,
-                                       ( this._altitude + CA.z) * this._beamAxisWorld.y / this._beamAxisWorld.z - CA.y,
-                                       this._altitude );
+            this.carrier.position.set( ( this._height + CA.z) * this._beamAxisWorld.x / this._beamAxisWorld.z - CA.x,
+                                       ( this._height + CA.z) * this._beamAxisWorld.y / this._beamAxisWorld.z - CA.y,
+                                       this._height );
         }
     }
 

@@ -2,7 +2,7 @@
 export const BSARConfig =
 {
     "Tx": {
-        "altitude": {
+        "height": {
             "value": 3000,
             "unit": "m"
         },
@@ -88,7 +88,7 @@ export const BSARConfig =
         },
     },
     "Rx": {
-        "altitude": {
+        "height": {
             "value": 1000,
             "unit": "m"
         },
@@ -165,8 +165,8 @@ export const BSARConfig =
 
 export const Elements = {
     "Tx": {
-        "altitude": {
-            "element": document.getElementById('TxAltitude'),
+        "height": {
+            "element": document.getElementById('TxHeight'),
             "needUpdate": [true, true, false, true, true], // render, infos Tx, infos Rx, BSAR infos, plots
             "isoRangeSurfaceUpdate": true // For Iso-Range Surface
         },
@@ -285,8 +285,8 @@ export const Elements = {
         }
     },
     "Rx": {
-        "altitude": {
-            "element": document.getElementById('RxAltitude'),
+        "height": {
+            "element": document.getElementById('RxHeight'),
             "needUpdate": [true, false, true, true, true], // render, infos Tx, infos Rx, BSAR infos, plots
             "isoRangeSurfaceUpdate": true // For Iso-Range Surface
         },
